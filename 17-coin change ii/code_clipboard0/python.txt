@@ -1,0 +1,49 @@
+def count_ways_rec(coins, amount, maximum):
+  if amount == 0:     # base case 1
+    return 1
+  if amount < 0:      # base case 2
+    return 0
+  ways = 0
+
+  # iterate over coins
+  for coin in coins:    
+
+    # to avoid repetition of similar sequences, use coins smaller than maximum
+    if coin <= maximum and amount - coin >= 0:  
+      
+      # notice how maximum is set to the current value of coin in recursive call    
+      ways += count_ways_rec(coins, amount-coin, coin)  
+  return ways
+
+def count_ways(coins, amount):
+  return count_ways_rec(coins, amount, max(coins))
+
+def main():
+    coins_lists = [[7], [1, 2, 5], [10], [49, 233, 96, 132, 188], 
+                   [310, 278, 99, 326, 5, 575, 569, 15, 141, 54], 
+                   [2823, 4551, 1750, 49, 3256, 405, 380, 4785, 3893, 874],
+                   [17, 1422, 30, 1153, 1275], [1460], [9, 10, 11]]
+    amounts = [9, 5, 10, 225, 350, 3200, 700, 2000, 0]
+
+    # You can uncomment the lines below and check how this recursive solution causes a time-out
+
+    # Length of coins_list used here is 45
+
+    # coins_lists.append([4021, 2158, 3577, 2157, 3928, 1229, 3888, 
+    #                     1464, 56, 4945, 138, 3148, 699, 3001, 83, 
+    #                     170, 4673, 941, 1539, 4904, 4118, 1953, 17, 
+    #                     2963, 4406, 2359, 2363, 2288, 4147, 1070, 
+    #                     4006, 3824, 467, 1785, 3365, 264, 3598, 
+    #                     1132, 3093, 3634, 3122, 3618, 4545, 3256, 836])
+    # amounts.append(5000)
+
+    for i in range(len(amounts)):
+        print(i+1, ".", "\tCoins: ", coins_lists[i], sep="")
+        print("\tAmount: ", amounts[i], sep="")
+        num_ways = count_ways(coins_lists[i], amounts[i])
+        print("\tNumber of Ways: ", num_ways, sep="")
+        print("-" * 100)
+        print()
+
+if __name__ == '__main__':
+    main()

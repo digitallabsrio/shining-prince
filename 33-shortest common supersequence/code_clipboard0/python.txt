@@ -1,0 +1,41 @@
+def shortest_common_supersequence_recursive(str1, str2, i1, i2):
+    # if any of the pointers has iterated over all the characters of the string,
+    # return the remaining length of the other string 
+    if i1 == len(str1):
+        return len(str2) - i2
+    if i2 == len(str2):
+        return len(str1) - i1
+
+    # if both the characters pointed by i1 and i2 are same, increment both pointers
+    if str1[i1] == str2[i2]:
+        return 1 + shortest_common_supersequence_recursive(str1, str2, i1 + 1, i2 + 1)
+
+    # recursively call the function twice by skipping one character from each string
+    length1 = 1 + shortest_common_supersequence_recursive(str1, str2, i1, i2 + 1)
+    length2 = 1 + shortest_common_supersequence_recursive(str1, str2, i1 + 1, i2)
+
+    # return the minimum of the two lengths
+    return min(length1, length2)
+
+def shortest_common_supersequence(str1, str2):
+    return shortest_common_supersequence_recursive(str1, str2, 0, 0)
+
+# driver code
+def main():
+    input_1_strings = ["abcd", "educativeisfun", "cpprocks", "abcf", "dynamic"]
+    input_2_strings = ["efgh", "algorithmsarefun", "cppisfun", "bdcf", "programming"]
+
+    # you can uncomment the two lines below and check how this recursive solution causes a time-out
+
+    # input_1_strings.append("iloveprogrammingbutprogrammingdoesnotloveme")
+    # input_2_strings.append("computersarefastprogrammerskeepthemslow")
+
+    for i in range(len(input_1_strings)):
+        print(i+1, ".", "\tString 1: ", input_1_strings[i], sep="")
+        print("\tString 2: ", input_2_strings[i], sep="")
+        length = shortest_common_supersequence(input_1_strings[i], input_2_strings[i])
+        print("\tLength of Shortest Common Supersequence: ", length, sep="")
+        print("-" * 100)
+
+if __name__ == '__main__':
+    main()

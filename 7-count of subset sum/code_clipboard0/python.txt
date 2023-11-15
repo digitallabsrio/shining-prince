@@ -1,0 +1,45 @@
+# main function
+def count_subset_sum(nums, target_sum):
+    return count_subset_sum_rec(nums, target_sum, 0)
+
+# helper function
+def count_subset_sum_rec(nums, target_sum, current_index):
+    # base cases
+    if target_sum == 0:
+        return 1
+    if current_index >= len(nums):
+        return 0
+
+    # if the number at current_index does not exceed the 
+    # target_sum, we include it
+    sum1 = 0
+    if nums[current_index] <= target_sum:
+        sum1 = count_subset_sum_rec(nums, target_sum - nums[current_index], current_index + 1)
+
+    # recursive call, excluding the number at the current_index
+    sum2 = count_subset_sum_rec(nums, target_sum, current_index + 1)
+
+    return sum1 + sum2
+
+
+def main():
+    input_nums = [[1], [11, 33], [4, 2, 3], [1, 4, 2, 3], [1, 2, 7, 4, 5], [1, 2, 3, 7]]
+    target_sums = [10, 11, 6, 4, 9, 6]
+
+    # You can uncomment the lines below and check how this recursive solution causes a time-out 
+
+    # input_nums.append([1, 4, 6, 7, 8, 9, 10, 11, 16, 17, 18, 21, 23, 25, 26, 28, 34,
+    #     35, 36, 38, 39, 40, 41, 42, 44, 47, 50, 51, 54, 55, 61, 62, 63, 65, 69, 71, 72, 
+    #     73, 75, 76, 78, 79, 80, 82, 83, 84, 85, 86, 88, 90, 91, 92, 93, 94, 98, 99, 100, 
+    #     101, 103, 104, 106, 109, 116, 118, 119])
+    # target_sums.append(2593)
+
+    for i in range(len(input_nums)):
+        print(str(i + 1) + ".\tnums = " + str(input_nums[i]))
+        print("\ttarget_sum =", target_sums[i])
+        print("\tTotal number of subsets whose sum is equal to the target sum =", count_subset_sum(input_nums[i], target_sums[i]))
+        print("-"*100)
+
+
+if __name__ == '__main__':
+    main()

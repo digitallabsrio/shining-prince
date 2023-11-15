@@ -1,0 +1,56 @@
+# helper recursive function
+def number_of_subsequences_rec(str1, str2, m, n, i1, i2, lookup_table):
+    # if we have reached the end of str1, return 1
+    if i2 == n:
+        return 1
+    
+    # if we have reached the end of str2, return 0
+    if i1 == m:
+        return 0
+    
+    # if the result is not present in the lookup table
+    if lookup_table[i1][i2] == -1:
+        # if both the characters are same
+        if str1[i1] == str2[i2]:
+            lookup_table[i1][i2] = number_of_subsequences_rec(str1, str2, m, n, i1 + 1, i2 + 1, lookup_table) 
+            lookup_table[i1][i2] += number_of_subsequences_rec(str1, str2, m, n, i1 + 1, i2, lookup_table)     # ignoring this match
+        # if the two characters are different
+        else:
+            lookup_table[i1][i2] = number_of_subsequences_rec(str1, str2, m, n, i1 + 1, i2, lookup_table)
+    
+    # return the result stored in the lookup table
+    return lookup_table[i1][i2]
+
+def number_of_subsequences(str1, str2):
+    # initializing variable
+    m = len(str1)
+    n = len(str2)
+
+    # initializing lookup table to store the results of recursive calls
+    lookup_table = [[-1 for x in range(0, len(str2))] for x in range(0, len(str1))]
+    
+    # call the recursive helper function
+    num_subsequences = number_of_subsequences_rec(str1, str2, m, n, 0, 0, lookup_table)
+    
+    # return the results
+    return num_subsequences
+
+# driver code
+def main():
+    input_1_strings = ["bbagbag", "dawawg", "programming", "googlegoogle", "wowowl"]
+    input_2_strings = ["bag", "aw", "ram", "gogl", "owl"]
+
+    # let's uncomment the lines below and see the effect of dynamic programming on a large test case
+
+    # input_1_strings.append("abababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababab")
+    # input_2_strings.append("abababababababababababababababababababababababababababababababababababababababababababababababababab")
+
+    for i in range(0, len(input_1_strings)):
+        print(f"{i + 1}.\tString 1: '{input_1_strings[i]}'")
+        print(f"\tString 2: '{input_2_strings[i]}'")
+        result = number_of_subsequences(input_1_strings[i], input_2_strings[i])
+        print(f"\n\tNumber of distinct subsequences: {result}")
+        print("-" * 100)
+
+if __name__ == '__main__':
+    main()

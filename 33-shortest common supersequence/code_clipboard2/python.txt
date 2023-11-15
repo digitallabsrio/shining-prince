@@ -1,0 +1,43 @@
+def shortest_common_supersequence(str1, str2):
+    # lookup table of size (m+1)*(n+1)
+    lookup_table = [[0 for x in range(len(str2) + 1)] for x in range(len(str1) + 1)]
+
+    # filling the additional row and column with constants
+    for i in range(len(str1) + 1):
+        lookup_table[i][0] = i
+
+    for j in range(len(str2) + 1):
+        lookup_table[0][j] = j
+
+    # iterate through both the strings
+    for i1 in range(1, len(str1) + 1):
+        for i2 in range(1, len(str2) + 1):
+            # if the characters match or not
+            if str1[i1 - 1] == str2[i2 - 1]:
+                lookup_table[i1][i2] = 1 + lookup_table[i1 - 1][i2 - 1]
+            else:
+                lookup_table[i1][i2] = 1 + min(lookup_table[i1 - 1][i2], lookup_table[i1][i2 - 1])
+
+    # return the last value of the lookup table
+    return lookup_table[len(str1)][len(str2)]
+
+
+# driver code
+def main():
+    input_1_strings = ["abcd", "educativeisfun", "cpprocks", "abcf", "dynamic"]
+    input_2_strings = ["efgh", "algorithmsarefun", "cppisfun", "bdcf", "programming"]
+
+    # let's uncomment the two lines below and see the effect of dynamic programming on a large test case
+    
+    # input_1_strings.append("iloveprogrammingbutprogrammingdoesnotloveme")
+    # input_2_strings.append("computersarefastprogrammerskeepthemslow")
+
+    for i in range(len(input_1_strings)):
+        print(i+1, ".", "\tString 1: ", input_1_strings[i], sep="")
+        print("\tString 2: ", input_2_strings[i], sep="")
+        length = shortest_common_supersequence(input_1_strings[i], input_2_strings[i])
+        print("\tLength of Shortest Common Super-sequence: ", length, sep="")
+        print("-" * 100)
+
+if __name__ == '__main__':
+    main()

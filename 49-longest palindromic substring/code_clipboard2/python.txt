@@ -1,0 +1,43 @@
+def find_lps_length(s):
+    # initializing a lookup table of dimensions len(s) * len(s)
+    dp = [[0 for x in range(len(s))] for x in range(len(s))]
+    
+    # every string with one character is always a palindrome
+    for i in range(len(s)):
+        dp[i][i] = 1
+
+    for start in reversed(range(len(s)-1)):
+        for end in range(start + 1, len(s)):
+            # the characters at the start and end indexes match
+            if s[start] == s[end]:
+                substring_length = end - start + 1
+
+                # if the substring length is 2 or the remaining substring is a palindrome
+                if substring_length == 2 or substring_length - 2 == dp[start + 1][end - 1]:
+                    dp[start][end] = substring_length
+                else:
+                    # skip one element either from the beginning or end and select the maximum resultant value
+                    dp[start][end] = max(dp[start + 1][end], dp[start][end - 1])
+            else:
+                # skip one element either from the beginning or end and select the maximum resultant value
+                dp[start][end] = max(dp[start + 1][end], dp[start][end - 1])
+
+    return dp[0][len(s) - 1]
+
+
+# Driver code
+def main():
+    strings = ['abcbda', 'tworacecars', 'pqrssrqp', 'mnop', 'bbbbbbbbbbbbbbbbbbbb']
+    
+    # Let's uncomment this to see the benefit of using dynamic programming with tabulation
+    # strings.append('mwusjunybvgafxuhloqwfoizqkkqzilltjw')
+    
+    for i in range(len(strings)):
+        print(i + 1, ".\t Input string: '", strings[i], "'", sep="")
+        result = find_lps_length(strings[i])
+        print("\t Length of the longest palindromic substring: ", result, sep="")
+        print("-" * 100)
+    
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,46 @@
+def find_LRS(str):
+    lookup_table = {}
+    return find_LRS_memoization(str, len(str), len(str), lookup_table)
+
+
+def find_LRS_memoization(str, p1, p2, lookup_table):
+    # Base case if any one index has reached end
+    if (p1 == 0) or (p2 == 0):
+        return 0
+
+    # Creating a key to store in map
+    key = p1, ",", p2
+    
+    # Checking if unique pair not in lookup table
+    if key not in lookup_table:
+        # Characters are same but indexes are different
+        if (str[p1 - 1] == str[p2 - 1]) and (p1 != p2):
+            lookup_table[key] = (
+                find_LRS_memoization(str, p1 - 1, p2 - 1, lookup_table) + 1
+            )
+        # Check if the characters at both indexes don't match
+        else:
+            lookup_table[key] = max(
+                find_LRS_memoization(str, p1, p2 - 1, lookup_table),
+                find_LRS_memoization(str, p1 - 1, p2, lookup_table),
+            )
+
+    # Returning value of the key from the map
+    return lookup_table[key]
+
+
+# Driver code
+def main():
+    inputs = ["abcd", "abddccd", "abbaba", "aaaaba", "abcdaeda"]
+
+    # Let's uncomment this and check the effect of dynamic programming using memoization
+    # inputs.append("abcdefghijklmnopqrstuv")
+
+    for i in range(len(inputs)):
+        print(str(i + 1) + ". String: "+str(inputs[i]))
+        print("Longest repeating subsequence is", find_LRS(inputs[i]))
+        print("-" * 100, "\n", sep="")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,54 @@
+# Helper function
+
+def LAS_rec(nums, previous, current, isAsc):
+  """
+    Recursively calculate the longest alternating ssubsequence
+    :param nums: list[int]: Sequence of integer numbers (array of integers)
+    :param previous: int: Index of the previous element 
+    :param current: int: Index of the current element 
+    :param isAsc: boolean: Indicates whether the current element is in ascending order relative to the previous
+    return: Length of longest alternating subsequence for the given subproblem
+  """
+  # Base case
+  if current == len(nums):
+	  return 0
+  count = 0
+
+  #  If the current element is bigger than the previous and flag is ascending
+  #  Increment count by 1, flip the flag and move to the next element
+  if nums[current] > nums[previous] and isAsc:
+      count = 1 + LAS_rec(nums, current, current+1, not isAsc)
+
+  #  If the current element is smaller than the previous and flag is descending
+  #  Increment count by 1, flip the flag and move to the next element
+  elif nums[current] < nums[previous] and not isAsc:
+      count = 1 +  LAS_rec(nums, current, current+1, not isAsc)
+      
+  # Iterate over the remaining sequence
+  count2 = max(count, LAS_rec(nums, previous, current+1, isAsc))
+
+  return count2
+
+
+def LAS(nums):
+  # we have to start with two recursive calls, one where we will consider that the first element is
+  # bigger than the second element and one where the first element is smaller than the second element
+  # +1 is for the zero index count, that we are skipping and starting our current index from 1
+  return max(LAS_rec(nums, 0, 1, True), LAS_rec(nums, 0, 1, False)) + 1
+
+# Driver code
+def main():
+    nums = [[1, 3, 2, 5], [1, 2, 3, 4], [4, 3, 2, 1], [5, 5, 5, 5, 5], [9, 6, 4, 5, 6, 3]]
+    
+    # You can uncomment the lines below and check how this recursive solution causes a time-out 
+    # nums.append([1, 6, 4, 8, 2, 9, 4, 1, 7, 11, 23, 65, 34, 23, 45, 34, 34, 32, 32, 21, 67, 89, 76, 77, 66, 44, 89, 0, 1, 2, 3, 5, 4, 2, 5, 6, 43, 2, 4, 5, 2, 55, 66, 1, 6, 4, 8, 2, 9, 4, 1, 7, 11, 23, 65, 34, 23, 45, 34, 34, 32, 32, 21, 67, 89, 76, 77, 66, 44, 89, 0, 1, 2, 3, 5, 4, 2, 5, 6, 43, 2, 4, 5, 2, 55, 66])
+
+    for i in range(0, len(nums)):
+        print(i+1, ".\tNums: ",nums[i], sep="")
+        result = LAS(nums[i])
+        print("\n\tThe Length of Longest Alternating Subsequence is: ", result, sep="")
+        print("-"*100, "\n", sep="")
+
+
+if __name__ == '__main__':
+    main()

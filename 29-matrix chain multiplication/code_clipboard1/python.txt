@@ -1,0 +1,33 @@
+import math
+
+def min_multiplications_recursive(dims, i, j):
+    # Base case
+    if j-i <= 2:
+        return 0
+    minimum = math.inf # Init with maximum integer value
+    for k in range(i+1, j-1): # Recursive calls for all the possible multiplication sequences
+        minimum = min(minimum, min_multiplications_recursive(dims, i, k+1) + # solve the subproblem from ith up to the kth matrix
+        min_multiplications_recursive(dims, k, j) +                          # solve the subproblem from the k+1th matrix to the jth matrix
+        dims[i] * dims[k] * dims[j-1])                                       # calculate the number of multiplications for the 
+                                                                             # current pair of matrices with dimensions dims[i]xdims[k] and dims[k]xdims[j-1]
+    return minimum
+
+def min_multiplications(dims):
+    return min_multiplications_recursive(dims, 0, len(dims))
+
+# Driver code
+def main():
+    dims = [[3, 3, 2, 1], [4, 3, 2, 1], [2, 2, 2], [1, 1, 1], [13, 16, 11, 99, 3]]
+
+    # You can uncomment the lines below and check how this recursive solution causes a time-out 
+    # dims.append([13, 16, 11, 99, 3, 13, 16, 11, 99, 3, 13, 16, 11, 99, 3, 13, 16, 11, 99, 3, 13, 16, 11, 99, 3, 13, 16, 11, 99, 3])
+
+    for i in range(len(dims)):
+        print(i+1, ".\tInput dims: ", dims[i] , sep="")
+        result = min_multiplications(dims[i])
+        print("\n\tThe least number of primitive multiplications possible: ", result, sep="")
+        print("-"*100, "\n", sep="")
+
+
+if __name__ == '__main__':
+    main()

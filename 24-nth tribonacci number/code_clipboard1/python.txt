@@ -1,0 +1,36 @@
+def tribonacci(n):
+    cache = [0] * (n + 1)
+    return tribonacciHelper(n, cache)
+
+def tribonacciHelper(n, cache):
+    # Base cases
+    if n == 0:
+        return 0
+    if n == 1 or n == 2:
+        return 1
+    
+    # Using memoization table to get the already evaluated result
+    if cache[n] != 0:
+        return cache[n]
+    
+    cache[n] = tribonacciHelper(n - 1, cache) + \
+                tribonacciHelper(n - 2, cache) + \
+                tribonacciHelper(n - 3, cache)
+    return cache[n]
+
+# Driver code
+def main():
+    n = [4, 5, 25, 17, 19]
+
+    # Let's uncomment this and check the effect of dynamic programming using memoization
+
+    # n.append(45)
+
+    for i in range(len(n)):
+        print((i + 1), ".\tThe ", (n[i]), "th Tribonacci number is:  ",
+              tribonacci(n[i]), sep="")
+        print("-"*100, "\n")
+
+
+if __name__ == '__main__':
+    main()

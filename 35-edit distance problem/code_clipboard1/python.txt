@@ -1,0 +1,70 @@
+def min_edit_dist_rec(str1, str2, m, n, lookup_table):
+   
+    # If first string is empty, the only option is to
+    # insert all characters of second string into first
+    if m == 0:
+        return n
+
+    # If second string is empty, the only option is to
+    # remove all characters of first string
+    if n == 0:
+        return m
+
+    # if the recursive call has been
+    # called previously, then return
+    # the stored value that was calculated
+    # previously
+    if lookup_table[m - 1][n - 1] != -1:
+        return lookup_table[m - 1][n - 1]
+
+    # If last characters of two strings are same, nothing
+    # much to do. Ignore last characters and get count for
+    # remaining strings.
+
+    # Store the returned value at lookup_table[m-1][n-1]
+    # considering 1-based indexing
+    if str1[m - 1] == str2[n - 1]:
+        lookup_table[m - 1][n - 1] = min_edit_dist_rec(str1, str2, m - 1, n - 1, lookup_table)
+        return lookup_table[m - 1][n - 1]
+
+    # If last characters are not same, consider all three
+    # operations on last character of first string, recursively
+    # compute minimum cost for all three operations and take
+    # minimum of three values.
+
+    # Store the returned value at lookup_table[m-1][n-1]
+    # considering 1-based indexing
+    # adding '1' because every operation has cost of '1'
+    lookup_table[m - 1][n - 1] = 1 + min(min_edit_dist_rec(str1, str2, m, n - 1, lookup_table),  # Insert
+                                        min_edit_dist_rec(str1, str2, m - 1, n, lookup_table),  # Remove
+                                        min_edit_dist_rec(str1, str2, m - 1, n - 1, lookup_table)  # Replace
+                                        )
+    return lookup_table[m - 1][n - 1]
+
+
+def min_edit_dist(str1, str2):
+   
+    # Declare a lookup_table array which stores
+    # the answer to recursive calls
+    lookup_table = [[-1 for i in range(len(str2))] for i in range(len(str1))]
+
+    return min_edit_dist_rec(str1, str2, len(str1), len(str2), lookup_table)
+
+
+# Driver code to test the above function
+if __name__ == '__main__':
+
+    str1 = ["sunday", "sam", "110011010110001", "cat", "ball"]
+    str2 = ["saturday", "samson", "1100101111110010", "cut", "baller"]
+
+    # Let's uncomment this and check the effect of dynamic programming using memoization
+   
+    # str1.append("iaetnxijfofxwnzfitssulvepiengehcaibfaorvraugndnurjfgixjljuibiaetnxijfofxwnzfitssulvepiengehcaibfaorvraugndnurjfgixjljuib")
+    # str2.append("raetnsijfoyxwnzcitssolveppengeqcaibnaorveaugnvnurjmgixjljuibabcdraetnsijfoyxwnzcitssolveppengeqcaibnaorveaugnvnurjmgixjljuib")
+
+    for i in range(len(str1)):
+        print(i+1, ".\tstr1: ", str1[i], sep="")
+        print("\tstr2:", str2[i])
+        print("\n\tMinimum Edit Distance:", min_edit_dist(str1[i], str2[i]))
+        print('-' * 100)
+        

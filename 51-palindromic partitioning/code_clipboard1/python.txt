@@ -1,0 +1,71 @@
+# Function to check if the current substring is a palindrome or not
+def is_palindrome(s, i, j, palindrome_table):
+    if palindrome_table[i][j] == -1:
+        palindrome_table[i][j] = 1
+
+        start, end = i, j
+
+        while start < end:
+            if s[start] != s[end]:
+                palindrome_table[i][j] = 0
+                return palindrome_table[i][j]
+
+            start += 1
+            end -= 1
+
+            if start < end and palindrome_table[start][end] != -1:
+                palindrome_table[i][j] = palindrome_table[start][end]
+                return palindrome_table[i][j]
+
+    return palindrome_table[i][j]
+
+
+# Helper function with updated signature: i is start index of the current substring
+# j is the end index of the current substring
+def min_cuts_helper(s, i, j, dp, palindrome_table):
+
+    # Base case
+    if i == j or is_palindrome(s, i, j, palindrome_table):
+        return 0
+
+    if dp[i][j] != -1:
+        return dp[i][j]
+
+    # Variable to store the minimum number of cuts per iteration
+    result = j - i + 1
+
+    # Loop to place a cut after each index
+    for k in range(i, j):
+        dp[i][j] = (
+            1
+            + min_cuts_helper(s, i, k, dp, palindrome_table)
+            + min_cuts_helper(s, k + 1, j, dp, palindrome_table)
+        )
+        result = min(result, dp[i][j])
+
+    # Return the minimum number of cuts
+    dp[i][j] = result
+    return dp[i][j]
+
+
+def min_cuts(s):
+    dp = [[-1 for x in range(len(s))] for y in range(len(s))]
+    palindrome_table = [[-1 for x in range(len(s))] for y in range(len(s))]
+    return min_cuts_helper(s, 0, len(s) - 1, dp, palindrome_table)
+    
+
+# Driver code
+def main():
+    inputs = ["radar", "abac", "book", "sleek", "fours"]
+
+    # Let's uncomment this and check the effect of dynamic programming using memoization
+    # inputs.append("elwxubtrnarrrjguuqwwoopgwjaaeavczrdubcgfvnxeutcatt")
+
+    for i in range(len(inputs)):
+        print(i + 1, ".\t s:",inputs[i],"\n\n\t", \
+                          "The minimum number of cuts are:", min_cuts(inputs[i]))
+                
+        print("-" * 100)
+
+if __name__ == '__main__':
+    main()

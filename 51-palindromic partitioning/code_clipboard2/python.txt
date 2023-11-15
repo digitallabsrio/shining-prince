@@ -1,0 +1,62 @@
+import math
+
+
+def min_cuts_helper(s, palindrome_table, dp):
+
+    n = len(s)
+
+    # Filling the palindrome table
+    for i in range(n - 1, -1, -1):
+        for j in range(i + 1, n):
+            if s[i] == s[j]:
+                # If the string consists of two characters or if the remaining string, str[i + 1 : j - 1]
+                # is a palindrome, str[i : j] must also be a palindrome
+                if j - i == 1 or palindrome_table[i + 1][j - 1]:
+                    palindrome_table[i][j] = 1
+
+    # Traversing the dp table in reverse order
+    for i in range(n - 1, -1, -1):
+
+        # If str[i : n - 1] is a palindrome, no cuts need to be performed,
+        # so dp[i] = 0
+        if palindrome_table[i][n - 1] == 1:
+            dp[i] = 0
+
+        # Otherwise, we traverse the remaining string to check if it contains
+        # a palindrome and perform the minimum number of cuts on it to update
+        # dp[i]
+        else:
+            for j in range(n - 2, i - 1, -1):
+                if palindrome_table[i][j] == 1:
+                    dp[i] = min(dp[i], 1 + dp[j + 1])
+
+    # We return dp[0], as it contains the minimum number of cuts over the
+    # entire string
+    return dp[0]
+
+
+def min_cuts(s):
+
+    n = len(s)
+
+    palindrome_table = [[1 if i == j else 0 for i in range(n)] for j in range(n)]
+    dp = [math.inf] * n
+
+    return min_cuts_helper(s, palindrome_table, dp)
+    
+
+# Driver code
+def main():
+    inputs = ["radar", "abac", "book", "sleek", "fours"]
+
+    # Let's uncomment this to see the benefit of using dynamic programming with tabulation 
+    # inputs.append("elwxubtrnarrrjguuqwwoopgwjaaeavczrdubcgfvnxeutcatt")
+
+    for i in range(len(inputs)):
+        print(i + 1, ".\t s:",inputs[i],"\n\n\t", \
+                          "The minimum number of cuts are:", min_cuts(inputs[i]))
+                
+        print("-" * 100)
+
+if __name__ == '__main__':
+    main()

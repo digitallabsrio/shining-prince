@@ -1,0 +1,48 @@
+# Function to check if the current substring is a palindrome or not
+def is_palindrome(s, i, j):
+    while i < j:
+        if s[i] != s[j]:
+            return False
+        i += 1
+        j -= 1
+    return True
+
+
+# Helper function with updated signature: i is start index of the current substring
+# j is the end index of the current substring
+def min_cuts_helper(s, i, j):
+
+    # Base case
+    if i == j or is_palindrome(s, i, j):
+        return 0
+
+    # Variable to store the minimum number of cuts per iteration
+    result = j - i + 1
+
+    # Loop to place a cut after each index
+    for k in range(i, j):
+        total_cuts = 1 + min_cuts_helper(s, i, k) + min_cuts_helper(s, k + 1, j)
+        result = min(result, total_cuts)
+
+    # Return the minimum number of cuts
+    return result
+
+
+def min_cuts(s):
+    return min_cuts_helper(s, 0, len(s) - 1)
+
+# Driver code
+def main():
+    inputs = ["radar", "abac", "book", "sleek", "fours"]
+
+    # You can uncomment the lines below and check how this recursive solution causes a time-out 
+    # inputs.append("elwxubtrnarrrjguuqwwoopgwjaaeavczrdubcgfvnxeutcatt")
+
+    for i in range(len(inputs)):
+        print(i + 1, ".\t s:",inputs[i],"\n\n\t", \
+                          "The minimum number of cuts are:", min_cuts(inputs[i]))
+                
+        print("-" * 100)
+
+if __name__ == '__main__':
+    main()

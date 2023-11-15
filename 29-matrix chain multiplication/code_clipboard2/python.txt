@@ -1,0 +1,37 @@
+import math
+
+def min_multiplications_recursive(dims, i, j, memo):
+    # Base case
+    if j-i <= 2:
+        return 0
+    if (i,j) in memo:
+        return memo[(i,j)]
+    minimum = math.inf # Init with maximum integer value
+    for k in range(i+1, j-1): # Recursive calls for all the possible multiplication sequences
+        minimum = min(minimum, min_multiplications_recursive(dims, i, k+1, memo) + # solve the subproblem from ith up to the kth matrix
+        min_multiplications_recursive(dims, k, j, memo) +                          # solve the subproblem from the k+1th matrix to the jth matrix
+        dims[i] * dims[k] * dims[j-1])                                             # calculate the number of multiplications for the 
+                                                                                   # current pair of matrices with dimensions dims[0]xdims[i] and dims[i]xdims[-1]
+    memo[(i,j)] = minimum # Storing the minimum value to the memo
+    return minimum
+
+def min_multiplications(dims):
+    memo = {}
+    return min_multiplications_recursive(dims, 0, len(dims), memo)
+
+# Driver code
+def main():
+    dims = [[3, 3, 2, 1], [4, 3, 2, 1], [2, 2, 2], [1, 1, 1], [13, 16, 11, 99, 3]]
+
+    # Let's uncomment this and check the effect of dynamic programming using memoization
+    # dims.append([13, 16, 11, 99, 3, 13, 16, 11, 99, 3, 13, 16, 11, 99, 3, 13, 16, 11, 99, 3, 13, 16, 11, 99, 3, 13, 16, 11, 99, 3])
+
+    for i in range(len(dims)):
+        print(i+1, ".\tInput dims: ", dims[i] , sep="")
+        result = min_multiplications(dims[i])
+        print("\n\tThe least number of primitive multiplications possible: ", result, sep="")
+        print("-"*100, "\n", sep="")
+
+
+if __name__ == '__main__':
+    main()

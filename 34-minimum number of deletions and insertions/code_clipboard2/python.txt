@@ -1,0 +1,56 @@
+# function to find the maximum number of matching characters subsequence
+def find_max_matching_subseq(str1, str2):
+    m = len(str1)   # length of str1
+    n = len(str2)   # length of str2
+
+    # Initializing the 2-D table
+    lookup_table = [[-1 for x in range(n+1)] for y in range(m+1)]
+
+    # Initializing the first row with 0s
+    for j in range(n+1):
+        lookup_table[0][j] = 0
+
+    # Initializing the first column with 0s
+    for i in range(m+1):
+        lookup_table[i][0] = 0
+
+    # Iterating to fill the table
+    for i in range(1, m+1):           
+        # calculate new row (based on previous row i.e. lookup_table)
+        for j in range(1, n+1):
+            # if characters at this position match, 
+            if str1[i-1] == str2[j-1]:    
+                # add 1 to the previous diagonal and store it in this diagonal
+                lookup_table[i][j] = lookup_table[i-1][j-1] + 1 
+            else:
+                # If the characters don't match, fill this entry with the max of the
+                # left and top elements
+                lookup_table[i][j] = max(lookup_table[i][j-1], lookup_table[i-1][j]) 
+    return lookup_table[m][n]
+
+def min_del_ins(str1, str2):
+  n = find_max_matching_subseq(str1, str2)
+  # calculating number of deletions required from str1 to transform it into str2
+  deletions = len(str1) - n
+  # calculating number of insertions required in str1 to transform it into str2
+  insertions = len(str2) - n
+
+  return deletions,insertions
+
+# Driver code to test the above function
+if __name__ == '__main__':
+    str1_list = ["pqr", "heap", "passport", "baller", "sam","bed"]
+    str2_list = ["tqr", "pea", "ppsspt", "ball", "samson","read"]
+
+    # Let's uncomment this to see the benefit of using dynamic programming with tabulation
+    # str1_list.append("sjcneiurutvmpdkapbrcapjru")
+    # str2_list.append("oidhfwepkxwebyurtunvidqlscmjbg")
+
+    for i in range(len(str1_list)):
+        print(i + 1, ".\tstr1: ", str1_list[i], sep="")
+        print("\tstr2:", str2_list[i])
+        deletions,insertions = min_del_ins(str1_list[i], str2_list[i])
+        print("\n\tMinimum deletions required:  " , deletions)
+        print("\tMinimum insertions required: " , insertions)
+        print('-' * 100)
+    

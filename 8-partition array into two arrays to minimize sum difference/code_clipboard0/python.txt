@@ -1,0 +1,39 @@
+# Helper function with updated signature: i is current index in nums
+# sums1 is the sum of the first partitioned array
+# sums2 is the sum of the second partitioned array
+def minimum_partition_array_sum_difference_helper(nums, i, sum1, sum2):
+
+    # Base case: If i becomes equal to the length of nums, there are no more
+    # elements left to add, so return the absolute difference between the
+    # two sums
+    if i == len(nums):
+        return abs(sum1 - sum2)
+
+    # Otherwise, recuresively calculate the minimum of adding the current
+    # array element to either the first, or second partitioned array
+    return min(
+        minimum_partition_array_sum_difference_helper(nums, i + 1, sum1 + nums[i], sum2),
+        minimum_partition_array_sum_difference_helper(nums, i + 1, sum1, sum2 + nums[i]),
+    )
+
+def minimum_partition_array_sum_difference(nums):
+    return minimum_partition_array_sum_difference_helper(nums, 0, 0, 0)
+
+# Driver code
+def main():
+    inputs = [[5, 4, 4, 7, 2, 9], [3, 25, 4, 12, 2], [3, 7, 4, 12, 2], 
+  			  [1, 1, 1, 1000, 1], [45, 2, 9, 87, 9, 12, 54, 56]]
+
+    # You can uncomment the lines below and check how this recursive solution causes a time-out
+
+    # inputs.append([4, 11, 15, 17, 18, 25, 26, 29, 32, 35, 37, 42, 43, 45, 46,
+  	# 		       48, 49, 55, 62, 66, 67, 68, 70, 78, 83, 88, 92, 94, 96, 100])
+  
+    for i in range(len(inputs)):
+        print(i + 1, ".\t nums:",inputs[i],"\n\n\t", \
+                     "The minimum difference in sums between the partitioned arrays is: ", minimum_partition_array_sum_difference(inputs[i]))
+            
+        print("-" * 100)
+
+if __name__ == '__main__':
+    main()

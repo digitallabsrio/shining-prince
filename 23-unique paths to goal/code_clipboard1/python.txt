@@ -1,0 +1,57 @@
+def find_unique_path(matrix):
+    # the length of 2d matrix will be equal to the number of rows
+    rows = len(matrix)  
+
+    # The number of elements in 1st row are equal to the number of columns in 2d matrix
+    column = len(matrix[0]) 
+
+    pathArray = [[-1 for index1 in range(column)]for index2 in range(rows)]
+
+    return find_unique_path_memoization(0, 0, rows, column, matrix, pathArray)
+
+# Helper function to check the boundaries and base case
+def find_unique_path_memoization(i, j, row, cols, matrix, pathArray):
+
+  # check the boundary constraints
+  if (i == row or j == cols):
+    return 0
+  
+  # check if obstacle is present or not 
+  if (matrix[i][j] == 1):
+    return 0
+  
+  # check the base case when the last cell is reached
+  if (i == row-1 and j == cols-1):
+    return 1
+    
+  if (pathArray[i][j] != -1):
+    return pathArray[i][j]
+ 
+  pathArray[i][j] = find_unique_path_memoization(i+1, j, row, cols, matrix, pathArray) + find_unique_path_memoization(i, j+1 , row, cols, matrix, pathArray)
+  return pathArray[i][j]
+
+
+# Driver code
+def main():
+  inputs = [
+    [[0,1], [0,0]],
+		[[0,0,0], [0,0,0], [0,0,0]],
+		[[0,0,0], [0,1,0], [0,0,0]],
+		[[0,0,0], [1,1,1], [0,0,0]],
+    [[0,0,0,0],[1,0,1,0],[1,0,0,0],[0,1,0,0]]
+	]
+  
+  # Let's uncomment this and check the effect of dynamic programming using memoization
+    
+  # inputs.append([[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])
+
+  for i in range(len(inputs)):
+    print(i + 1, ".\t Matrix:",inputs[i],"\n\n\t", \
+                      "Number of unique paths:", find_unique_path(inputs[i])) 
+        
+    print("-" * 100)
+    
+if __name__ == '__main__':
+    main()
+    
+  

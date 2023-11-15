@@ -1,0 +1,43 @@
+def scoring_options_rec(n, memo):
+    # We can not get a negative score, we return 0 for negative values
+    if n < 0:
+        return 0
+
+    # Check if a solution already exists in the array
+    if memo[n] != -1:
+        return memo[n]
+
+    # Else, we recursively calculate the solution for the
+    # given value and store it in our solution array
+
+    memo[n] = scoring_options_rec(n - 1, memo) + scoring_options_rec(n - 2, memo) + scoring_options_rec(n - 4, memo)
+
+    return memo[n]
+
+# Scoring options are 1, 2, and 4
+def scoring_options(n):
+
+    # Initializing our solution array
+    memo = [-1] * max(5, n + 1)
+
+    # Set up the base case, 1 way to score 0
+    memo[0] = 1
+
+    # Pass our array to the helper function
+    return scoring_options_rec(n, memo)
+
+def main():
+    total_scores = [3, 5, 10, 25, 0]
+
+    # You can uncomment the line below and check how this top-down solution executes without a time-out 
+    
+    # total_scores.append(35)
+
+    for i in range(len(total_scores)):
+        num_ways = scoring_options(total_scores[i])
+        print(i+1, ".", "\tNumber of ways to reach the score ", total_scores[i], ": ", num_ways, sep="")
+        print("-" * 100)
+        print()
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,59 @@
+def word_break(s, word_dict):
+
+    # Initializing a table of size s.length + 1
+    dp_solutions = [[]] * (len(s)+1)
+
+    # Setting base case
+    dp_solutions[0] = [""]
+
+    # For each substring in the input string, repeat the process.
+    for i in range(1, len(s)+1):
+
+        # An array to store the results of the current substring being checked.
+        temp = []
+
+        # Iterate over the current substring and break it down into all possible prefixes.
+        for j in range(0, i):
+            prefix = s[j:i]
+            
+            # Check if the current prefix exists in word_dict. If it does, we know that it is a valid word
+            # and can be used as part of the solution.
+            if prefix in word_dict:
+                
+                # Check if any part of the current substring already exists in the dp_solutions array.
+                for substrings in dp_solutions[j]:
+                    # Merge the prefix with the already calculated results
+                    temp.append((substrings + " " + prefix).strip())
+
+        dp_solutions[i] = temp
+
+    # Returning all the sentences formed using a complete string s.
+    return dp_solutions[len(s)]
+
+# Driver Code
+def main():
+
+    s = ["vegancookbook", "catsanddog", "highwaycrash",
+         "pineapplepenapple", "screamicecream", "educativecourse"]
+    word_dict = ["oghi", "ncoo", "kboo", "inea",
+        "icec", "ghway", "tsand", "anco", "eame", "ghigh", "hi", "way", "wa"
+        "amic", "mi", "ed", "cecre", "pple", "reamicecreamed", "ena", "tsa", "ami", "hwaycrashpineapplepenapplescreamicecreamed", "lepen", "okca", "highway", "ples", "atsa", "oghig", "ookb", "epe", "ookca", "nea", "cra", "lepe", "vegancookbookcatsandd"
+        "kc", "ra", "le", "ay", "crashpineapple", "ycras", "vegancookbookcatsanddoghighwaycrashpineapplepenapplescre", "doghi", "nddo", "hway", "vegancookbookcatsanddoghi", "vegancookbookcatsanddoghighwaycr", "at", "mice", "nc", "d", "enapplescreamicecreamed", "h"
+        "ecrea", "nappl", "shp", "kbo", "yc", "vegancookbookcatsanddoghighwaycrashpineapplepenapplescream", "cat", "waycrashpineapplepenapplescreamicecreamed", "tsan", "vegancookbookcatsanddoghighwaycrashpineap", "ganco", "lescr", "sand", "applescreamicecreamed", "vegancookbookcatsanddoghig", "pi", "vegancookbookcatsanddoghighwaycrashpineapp", "cookb", "okcat", "neap", "nap", "oghighwaycrashpineapplepenapplescreamicecreamed", "crashpineapplepenapplescreamicecreamed",
+        "ashpi", "ega", "escreamicecreamed", "hwa", "rash", "cre", "micecreamed", "plepe", "coo", "epen", "napp", "wayc", "vegancookbookcatsanddoghighwaycrashpinea", "vegancookbookcatsanddogh", "plep", "ice", "ple", "gh", "ghw", "cook", "pl", "app", "ic", "pinea", "hello", "dog", "vegancookbookcat", "eamed", "ook", "lesc", "ddog", "ca", "vegancookbookcatsanddoghighwaycrashpineapplepenapplescreamice", "c", "escr", "penap", "boo", "eami", "ecreamed", "vegancookbookcatsanddoghighwaycrashpi", "igh", "mic", "ganc", "vegancookbookcatsanddoghighwaycrashpineapplepenap",
+        "eappl", "vegancookbookcatsanddoghighway", "ep", "penapple", "b", "ycrashpineapplepenapplescreamicecreamed", "pin", "book", "p", "sa", "okb", "andd", "ayc", "sh", "vegan", "cookbook"]
+
+    # Let's uncomment this to see the benefit of using dynamic programming with tabulation
+    # s.append("vegancookbookcatsanddoghighwaycrashpineapplepenapplescream")
+
+    print("The list of words we can use to break down the strings are:\n\n", word_dict, "\n")
+    print("-" * 100)
+    for i in range(len(s)):
+        print("Test Case #", i+1, "\n\nThe possible strings from the string '" +
+              str(s[i]) + "' are the following combinations:", sep="")
+        print("\n" + str(word_break(str(s[i]), word_dict)))
+        print("-" * 100)
+
+
+if __name__ == '__main__':
+    main()

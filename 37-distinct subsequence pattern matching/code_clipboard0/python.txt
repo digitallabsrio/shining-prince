@@ -1,0 +1,54 @@
+# helper recursive function
+def number_of_subsequences_rec(str1, str2, m, n, i1, i2):
+    # if we have reached the end of str1, return 1
+    if i2 == n:
+        return 1
+    
+    # if we have reached the end of str2, return 0
+    if i1 == m:
+        return 0
+    
+    # initializing result variable to store the number of subsequences
+    result = 0
+
+    # if both the characters are same
+    if str1[i1] == str2[i2]:
+        result += number_of_subsequences_rec(str1, str2, m, n, i1 + 1, i2 + 1)
+        result += number_of_subsequences_rec(str1, str2, m, n, i1 + 1, i2)     # ignoring this match
+    # if the two characters are different
+    else:
+        result += number_of_subsequences_rec(str1, str2, m, n, i1 + 1, i2)
+    
+    # return the number of subsequences
+    return result
+
+def number_of_subsequences(str1, str2):
+    # initializing variables
+    m = len(str1)
+    n = len(str2)
+
+    # calling the helper recursive function
+    num_subsequences = number_of_subsequences_rec(str1, str2, m, n, 0, 0)
+    
+    # returning the results
+    return num_subsequences
+
+# driver code
+def main():
+    input_1_strings = ["bbagbag", "dawawg", "programming", "googlegoogle", "wowowl"]
+    input_2_strings = ["bag", "aw", "ram", "gogl", "owl"]
+
+    # you can uncomment the lines below and check how this recursive solution causes a time-out
+
+    # input_1_strings.append("abababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababab")
+    # input_2_strings.append("abababababababababababababababababababababababababababababababababababababababababababababababababab")
+
+    for i in range(0, len(input_1_strings)):
+        print(f"{i + 1}.\tString 1: '{input_1_strings[i]}'")
+        print(f"\tString 2: '{input_2_strings[i]}'")
+        result = number_of_subsequences(input_1_strings[i], input_2_strings[i])
+        print(f"\n\tNumber of distinct subsequences: {result}")
+        print("-" * 100)
+
+if __name__ == '__main__':
+    main()

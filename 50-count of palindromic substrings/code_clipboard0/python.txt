@@ -1,0 +1,52 @@
+def count_palindromic_substring(str1):
+  # as every individual character can be a palindromic substring so add the length
+  # of the string to the evaluated count of the string
+  return len(str1) + count_palindromic_substring_recursive(str1, 0, len(str1)-1)
+
+def count_palindromic_substring_recursive(str1, i, j):
+  # if i>j then there can be no substring
+  # if i=j it means string has single letter so we will count the string itself as a palindromic substring
+  # in both the cases we will return the length of the string as count of substring  
+  if i >= j:
+    return 0 
+  
+  # defining a variable to count the palindromic substrings
+  ps_count = 0
+  
+  # checking if a substring of the string is a palindrome or not
+  if check_palindrome(str1, i, j):
+    # if it is a palindrome we will increment the count of the substrings, will check the other substring from i+1 to j 
+    ps_count = 1 + (count_palindromic_substring_recursive(str1, i+1, j) 
+    # checking substring from i to j-1
+    + count_palindromic_substring_recursive(str1, i, j-1)
+    # remove common palindromic substrings   
+    - count_palindromic_substring_recursive(str1, i+1, j-1))
+    return ps_count
+  
+  else:
+    # if it is not a palindrome then we will check the rest of the substrings
+    ps_count = count_palindromic_substring_recursive(str1, i+1, j) + count_palindromic_substring_recursive(str1, i, j-1)  - count_palindromic_substring_recursive(str1, i+1, j-1)
+    return ps_count
+
+def check_palindrome(str1, i, j):
+  # checking if the string is a palindrome or not
+  if i>j:
+    return True
+  if str1[i] != str1[j]:
+    return False
+  
+  return check_palindrome(str1, i+1, j-1)
+
+# Driver code to test the above function
+if __name__ == '__main__':
+
+    str1_list = ["abdbca", "cddpd", "pqr", "abaab", "aaa"]
+    
+    # You can uncomment the lines below and check how this recursive solution causes a time-out 
+    # str1_list.append("xkjkqlajprjwefilxgpdpebieswu")
+    
+
+    for i in range(len(str1_list)):
+        print(i+1, ".\tstr1: ", str1_list[i], sep="")
+        print("\n\tCount of palindromic substrings:", count_palindromic_substring(str1_list[i]))
+        print('-' * 100)

@@ -1,0 +1,54 @@
+def find_strings_interleaving_recursive(s1, s2, s3, s1_index, s2_index, s3_index):
+
+    # If we have reached the end of all the strings
+    if s1_index == len(s1) and s2_index == len(s2) and s3_index == len(s3):
+        return True
+
+    # If we have reached the end of 's3' but 's1' or 's2' still has some characters left
+    if s3_index == len(s3):
+        return False
+
+    # The two decisions we can make at every instance are initially set to false
+    d1 = False
+    d2 = False
+
+    # If s1 index and s3 index are pointing to the same character
+    if s1_index < len(s1) and s1[s1_index] == s3[s3_index]:
+        d1 = find_strings_interleaving_recursive(
+            s1, s2, s3, s1_index + 1, s2_index, s3_index + 1)
+
+    # If s2 index and s3 index are pointing to the same character
+    if s2_index < len(s2) and s2[s2_index] == s3[s3_index]:
+        d2 = find_strings_interleaving_recursive(
+            s1, s2, s3, s1_index, s2_index + 1, s3_index + 1)
+
+    # If either of these conditions is true, it means that s3 was indeed a product of
+    # interleaving s1 and s2.
+    return d1 or d2
+
+
+# The main function that initiates a recursive call to the helper function
+def is_interleaving(s1, s2, s3):
+    return find_strings_interleaving_recursive(s1, s2, s3, 0, 0, 0)
+
+# Driver code:
+
+def main():
+    s1 = ["abd", "abc", "abcdef", "", "xyz", "abcdefghijklmnopqrstuvwxyz"]
+    s2 = ["cef", "def", "mnop", "", "abc", "abcdefghijklmnopqrstuvwxyz"]
+    s3 = ["adcbef", "abcccf", "mnaobcdepf", "", "abc", "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"]
+
+    # You can uncomment the three lines below and check how this recursive solution causes a time-out
+    # s1.append("abcdefghijklmnopqrstuvwxyz")
+    # s2.append("abcdefghijklmnopqrstuvwxyz")
+    # s3.append("aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz")
+    for i in range(len(s1)):
+        print("Test Case #", i+1)
+        print("The strings are:\ns1 = '", s1[i], "'\ns2 = '", s2[i], "'\ns3 = '", s3[i], "'", sep="")
+        print("Is s3 a product of interleaving s1 and s2?")
+        print(is_interleaving(s1[i], s2[i], s3[i]))
+        print("-" * 100)
+
+
+if __name__ == '__main__':
+    main()

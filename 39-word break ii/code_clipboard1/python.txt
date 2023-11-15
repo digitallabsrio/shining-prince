@@ -1,0 +1,56 @@
+def word_break(s, word_dict):
+    # Calling the helper function
+    return word_break_rec(s, word_dict, {})
+    
+# Helper Function that breaks down the string into words from subs
+def word_break_rec(s, dictionary, result):
+    # If s is empty string
+    if not s:
+        return []
+    
+    if s in result:
+        return result[s]
+    
+    res = []
+    for word in dictionary:
+        # Verifying if s can be broken down further
+        if not s.startswith(word):
+            continue
+        if len(word) == len(s):
+            res.append(s)
+        else:
+            result_of_the_rest = word_break_rec(s[len(word):], dictionary, result)
+            for item in result_of_the_rest:
+                item = word + ' ' + item
+                res.append(item)
+    result[s] = res
+    return res
+
+# Driver Code
+def main():
+
+    s = ["vegancookbook", "catsanddog", "highwaycrash",
+         "pineapplepenapple", "screamicecream", "educativecourse"]
+    word_dict = ["oghi", "ncoo", "kboo", "inea",
+        "icec", "ghway", "tsand", "anco", "eame", "ghigh", "hi", "way", "wa"
+        "amic", "mi", "ed", "cecre", "pple", "reamicecreamed", "ena", "tsa", "ami", "hwaycrashpineapplepenapplescreamicecreamed", "lepen", "okca", "highway", "ples", "atsa", "oghig", "ookb", "epe", "ookca", "nea", "cra", "lepe", "vegancookbookcatsandd"
+        "kc", "ra", "le", "ay", "crashpineapple", "ycras", "vegancookbookcatsanddoghighwaycrashpineapplepenapplescre", "doghi", "nddo", "hway", "vegancookbookcatsanddoghi", "vegancookbookcatsanddoghighwaycr", "at", "mice", "nc", "d", "enapplescreamicecreamed", "h"
+        "ecrea", "nappl", "shp", "kbo", "yc", "vegancookbookcatsanddoghighwaycrashpineapplepenapplescream", "cat", "waycrashpineapplepenapplescreamicecreamed", "tsan", "vegancookbookcatsanddoghighwaycrashpineap", "ganco", "lescr", "sand", "applescreamicecreamed", "vegancookbookcatsanddoghig", "pi", "vegancookbookcatsanddoghighwaycrashpineapp", "cookb", "okcat", "neap", "nap", "oghighwaycrashpineapplepenapplescreamicecreamed", "crashpineapplepenapplescreamicecreamed",
+        "ashpi", "ega", "escreamicecreamed", "hwa", "rash", "cre", "micecreamed", "plepe", "coo", "epen", "napp", "wayc", "vegancookbookcatsanddoghighwaycrashpinea", "vegancookbookcatsanddogh", "plep", "ice", "ple", "gh", "ghw", "cook", "pl", "app", "ic", "pinea", "hello", "dog", "vegancookbookcat", "eamed", "ook", "lesc", "ddog", "ca", "vegancookbookcatsanddoghighwaycrashpineapplepenapplescreamice", "c", "escr", "penap", "boo", "eami", "ecreamed", "vegancookbookcatsanddoghighwaycrashpi", "igh", "mic", "ganc", "vegancookbookcatsanddoghighwaycrashpineapplepenap",
+        "eappl", "vegancookbookcatsanddoghighway", "ep", "penapple", "b", "ycrashpineapplepenapplescreamicecreamed", "pin", "book", "p", "sa", "okb", "andd", "ayc", "sh", "vegan", "cookbook"]
+    
+    # Let's uncomment this and check the effect of dynamic programming using memoization
+    # s.append("vegancookbookcatsanddoghighwaycrashpineapplepenapplescream")
+
+    print("The list of words we can use to break down the strings are:\n\n", word_dict, "\n")
+    print("-" * 100)
+    for i in range(len(s)):
+        print("Test Case #", i+1, "\n\nThe possible strings from the string '" +
+              str(s[i]) + "' are the following combinations:", sep="")
+        print("\n" + str(word_break(str(s[i]), word_dict)))
+        print("-" * 100)
+
+
+if __name__ == '__main__':
+    main()
+    

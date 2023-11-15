@@ -1,0 +1,27 @@
+def count_ways(n):
+    # Base Conditions
+    if n < 0: 
+        return 0
+
+    elif n == 0:
+        return 1
+
+    # Check each possible combination
+    else:
+        return count_ways(n - 1) + count_ways(n - 2) + count_ways(n - 3)
+
+# Driver code
+def main():
+    inputs = [0, 4, 3, 5, 6]
+
+    # You can uncomment the lines below and check how this recursive solution causes a time-out
+    # inputs.append(100)
+
+    for i in range(len(inputs)):
+        print(i + 1, ".\t Steps:",inputs[i],"\n\n\t", \
+                         "Number of ways:", count_ways(inputs[i])) 
+            
+        print("-" * 100)
+
+if __name__ == '__main__':
+    main()

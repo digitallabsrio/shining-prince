@@ -1,0 +1,46 @@
+import math
+
+def coin_change(coins, total): 
+    if total < 1:
+        return 0
+    return calculate_minimum_coins_rec(coins, total)
+
+def calculate_minimum_coins_rec(coins, rem):  
+    # Helper function that calculates amount left to be 
+    # calculated and tells what it's value can be.
+    if rem < 0: 
+        return -1
+    if rem == 0:
+        return 0
+    minimum = math.inf
+
+    for s in coins: 
+        # Recursive approach to keep in account every number's result 
+        result = calculate_minimum_coins_rec(coins, rem-s)
+        if result >= 0 and result < minimum:
+            minimum = 1 + result
+
+    if minimum != math.inf:
+        return minimum
+    else:
+        return -1
+
+# Driver Code
+
+def main():
+    coins = [[1, 3, 4, 5],[1, 2, 3],[2, 3, 7],[1, 3, 9],[1, 4, 6, 9]]
+    total = [7, 5, 1, 4, 11]
+
+    # You can uncomment the lines below and check how this recursive solution causes a time-out 
+
+    # coins.append([34, 10, 415, 200])
+    # total.append(610)
+
+    for i in range(len(total)):
+        print(str(i+1) + ".\tThe minimum number of coins required to find " + \
+                    str(total[i]) + " from " + str(coins[i]) + " is: " + \
+                            str(coin_change(coins[i], total[i])))
+        print("-" * 100)
+
+if __name__ == '__main__':
+    main()

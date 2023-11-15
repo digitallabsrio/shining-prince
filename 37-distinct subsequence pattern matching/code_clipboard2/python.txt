@@ -1,0 +1,47 @@
+# function to calculate the number of subsequences
+def number_of_subsequences(str1, str2):
+    # initializing variables
+    m = len(str1)
+    n = len(str2)
+    lookup_table = [[0 for x in range(0, n + 1)] for x in range(0, m + 1)]
+
+    # filling the last row with 0s
+    for i in range(0, n + 1):
+        lookup_table[m][i] = 0
+    
+    # filling the last column with 1s
+    for i in range(0, m + 1):
+        lookup_table[i][n] = 1
+    
+    # iterating over the lookup table starting from m-1 and n-1
+    for i1 in range(m - 1, -1, -1):
+        for i2 in range(n - 1, -1, -1):
+            # if both the characters are same
+            if str1[i1] == str2[i2]:
+                lookup_table[i1][i2] += lookup_table[i1 + 1][i2 + 1] + lookup_table[i1 + 1][i2]
+            # if the two characters are different
+            else:
+                lookup_table[i1][i2] = lookup_table[i1 + 1][i2]
+    
+    # returning the result stored in lookup_table[0][0]
+    return lookup_table[0][0]
+
+# driver code
+def main():
+    input_1_strings = ["bbagbag", "dawawg", "programming", "googlegoogle", "wowowl"]
+    input_2_strings = ["bag", "aw", "ram", "gogl", "owl"]
+
+    # let's uncomment the lines below and see the effect of dynamic programming on a large test case
+
+    # input_1_strings.append("abababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababab")
+    # input_2_strings.append("abababababababababababababababababababababababababababababababababababababababababababababababababab")
+
+    for i in range(0, len(input_1_strings)):
+        print(f"{i + 1}.\tString 1: '{input_1_strings[i]}'")
+        print(f"\tString 2: '{input_2_strings[i]}'")
+        result = number_of_subsequences(input_1_strings[i], input_2_strings[i])
+        print(f"\n\tNumber of distinct subsequences: {result}")
+        print("-" * 100)
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,64 @@
+def minimum_partition_array_sum_difference(nums):
+
+    # Calculating the sum of the original array
+    sum_array = sum(nums)
+
+    # Calculating the number of rows and columns in the 2-D array
+    rows = len(nums)
+    cols = (sum_array // 2) + 1
+
+    # Initializing the 2-D array
+    dp = [[-1 for x in range(cols)] for y in range(rows)]
+
+    # The first column will be initialized to all 1s, since a sum s = 0
+    # will always be true if no elements are added to the subset
+    for i in range(rows):
+        dp[i][0] = 1
+
+    # For the first row, each entry will be 1 if the sum s is equal to the
+    # first element, and 0 otherwise
+    for s in range(1, cols):
+        dp[0][s] = nums[0] == s
+
+    # Iterating and filling the dp array
+    for i in range(1, rows):
+        for s in range(1, cols):
+            # Check if sum s can be obtained without nums[i] in the array
+            if dp[i - 1][s]:
+                dp[i][s] = dp[i - 1][s]
+
+            # Check if sum s can be obtained with nums[i] in the array
+            elif s >= nums[i]:
+                dp[i][s] = dp[i - 1][s - nums[i]]
+
+            # If neither of the above two conditions is true, sum s can not be
+            # obtained with nums[i] included in the array
+            else:
+                dp[i][s] = 0
+
+    # Find the largest index in the last row which is 1 and return the absolute
+    # difference between the two sums
+    for s in range(cols - 1, -1, -1):
+        if dp[rows - 1][s] == 1:
+            sum1 = s
+            sum2 = sum_array - sum1
+            return abs(sum2 - sum1)
+
+# Driver code
+def main():
+    inputs = [[5, 4, 4, 7, 2, 9], [3, 25, 4, 12, 2], [3, 7, 4, 12, 2], 
+  			  [1, 1, 1, 1000, 1], [45, 2, 9, 87, 9, 12, 54, 56]]
+
+    # Let's uncomment this and check the effect of dynamic programming using tabulation
+
+    # inputs.append([4, 11, 15, 17, 18, 25, 26, 29, 32, 35, 37, 42, 43, 45, 46,
+  	# 		       48, 49, 55, 62, 66, 67, 68, 70, 78, 83, 88, 92, 94, 96, 100])
+  
+    for i in range(len(inputs)):
+        print(i + 1, ".\t nums:",inputs[i],"\n\n\t", \
+                     "The minimum difference in sums between the partitioned arrays is: ", minimum_partition_array_sum_difference(inputs[i]))
+            
+        print("-" * 100)
+
+if __name__ == '__main__':
+    main()

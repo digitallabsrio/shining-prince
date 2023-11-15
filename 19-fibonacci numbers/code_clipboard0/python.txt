@@ -1,0 +1,23 @@
+def get_fibonacci(n):
+    # Base case for n = 0 and n = 1
+    if n < 2:
+        return n
+
+    # Otherwise, calculate the Fibonacci number using the recurrence relation
+    return get_fibonacci(n - 1) + get_fibonacci(n - 2)
+
+
+# Driver code
+def main():
+    inputs = [0, 5, 7, 10, 14]
+
+    # You can uncomment the line below and check how this recursive solution causes a time-out 
+    # inputs.append(60)
+
+    for i in range(len(inputs)):
+        print(str(i + 1) + ". " + str(inputs[i]) + "th Fibonacci number is:", get_fibonacci(inputs[i]))
+        print("-" * 100, "\n", sep="")
+
+
+if __name__ == "__main__":
+    main()

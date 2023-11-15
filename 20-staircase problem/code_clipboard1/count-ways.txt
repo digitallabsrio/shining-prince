@@ -1,0 +1,41 @@
+def count_ways_rec(n, lookup_table):
+    # Negative staircases i.e., invalid input
+    if n < 0:  
+        return 0
+
+    # If 0 staircases
+    elif n == 0:  
+        return 1
+
+    # If already present in the table
+    elif lookup_table[n] > -1:  
+        return lookup_table[n]
+
+    # If not present in the table
+    else:   
+        lookup_table[n] = count_ways_rec(n - 1, lookup_table) +\
+                                         count_ways_rec(n - 2, lookup_table) +\
+                                         count_ways_rec(n - 3, lookup_table)
+    return lookup_table[n]
+
+
+def count_ways(n):
+    lookup_table = [-1 for x in range(n + 1)]
+    return count_ways_rec(n, lookup_table)
+
+
+# Driver code to test the above function
+def main():
+    inputs = [0, 4, 3, 5, 6]
+
+    # Let's uncomment this and check the effect of dynamic programming using memoization
+    # inputs.append(100)
+
+    for i in range(len(inputs)):
+        print(i + 1, ".\t Steps:",inputs[i],"\n\n\t", \
+                         "Number of ways:", count_ways(inputs[i])) 
+            
+        print("-" * 100)
+
+if __name__ == '__main__':
+    main()

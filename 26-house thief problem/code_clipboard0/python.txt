@@ -1,0 +1,35 @@
+def house_thief(money):
+  #Call helper function
+  return house_thief_rec(money, 0)
+
+#Helper function
+def house_thief_rec(money, ind):
+  #Stopping criteria
+  stop = len(money)
+  #Base case
+  if ind >= stop:
+    return 0
+  new_ind = ind+1
+  #returns the maximum of the following two values:
+  #1. Leaving the current house and starting from the next house
+  #2. The maximum robbery if we rob the current house along with the houses starting from the next to
+  # the next house, as we cannot rob adjacent houses
+  return max(house_thief_rec(money,new_ind), money[new_ind-1] + house_thief_rec(money, new_ind+1))
+
+#Driver code
+def main():
+  lists = [[2, 7, 9, 31, 33, 4, 99, 1 , 2, 3, 15, 34, 23, 11, 9, 1, 4], 
+  [1, 2, 3, 1], [4, 6, 3, 9, 3, 8, 3], [1, 5, 7, 3, 7 , 2, 3], [2, 7, 9, 3, 1]]
+  
+  #You can uncomment the lines below and check how this recursive solution causes a time-out 
+  
+  # lists.append([2, 7, 9, 31, 33, 56, 78, 59, 85, 7, 3, 74, 6, 3, 9, 3, 8, 30, 
+  # 1, 2, 5, 10, 30, 50, 4, 99, 202, 150, 33, 65, 79, 2, 3, 1 , 2, 3, 15, 34, 
+  # 23, 11, 9, 8, 5, 78, 89, 12, 56, 78, 23, 90, 66, 5, 7, 9, 1, 4])
+
+  for i in lists:
+    print('Maximum Theft in example',i , 'is' , house_thief(i))
+    print("-"*100, "\n", sep="")
+
+if __name__ == '__main__':
+    main()

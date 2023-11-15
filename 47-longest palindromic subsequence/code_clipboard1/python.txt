@@ -1,0 +1,40 @@
+def longest_palindromic_subsequence(s):
+    # Initializing a lookup table of dimensions len(s) x len(s)
+    lookup_table = [[0 for x in range(len(s))] for x in range(len(s))]
+
+    return longest_palindromic_subsequence_recursive(lookup_table, s, 0, len(s) - 1)
+
+def longest_palindromic_subsequence_recursive(lookup_table, s, start_index, end_index):
+    if start_index > end_index:
+        return 0
+
+    # Every sequence with one element is a palindrome of length 1
+    if start_index == end_index:
+        return 1
+
+    if lookup_table[start_index][end_index] == 0:
+        # case 1: elements at the beginning and the end are the same
+        if s[start_index] == s[end_index]:
+            lookup_table[start_index][end_index] = 2 + longest_palindromic_subsequence_recursive(lookup_table, s, start_index + 1, end_index - 1)
+        else:
+            # case 2: skip one element either from the beginning or the end
+            c1 = longest_palindromic_subsequence_recursive(lookup_table, s, start_index + 1, end_index)
+            c2 = longest_palindromic_subsequence_recursive(lookup_table, s, start_index, end_index - 1)
+            lookup_table[start_index][end_index] = max(c1, c2)
+
+    return lookup_table[start_index][end_index]
+
+
+
+
+# Driver code to test the above function
+if __name__ == '__main__':
+    strings=['cddpd', 'abdbca','racecar','pqr']
+
+    # Let's uncomment this and check the effect of dynamic programming using memoization
+    
+    # strings.append('aeqirradarqwruirrraaadddaqweraarrr')
+    
+    for i in range(len(strings)):
+        print(str(i+1)+". The length of the longest palindromic subsequence in '", strings[i] ,"' is: ",longest_palindromic_subsequence(strings[i]), sep="")
+        print("-"*100)

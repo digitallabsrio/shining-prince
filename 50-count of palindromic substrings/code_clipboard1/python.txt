@@ -1,0 +1,72 @@
+def count_palindromic_substring(str1):
+  # Declare a memo table that stores
+  # the answer to recursive calls  
+  memo = [[-1 for _ in range(len(str1))] for _ in range(len(str1))]
+  # as every individual character can be a palindromic substring so add the length
+  # of the string to the evaluated count of the string
+  return len(str1) + count_palindromic_substring_memo(str1, 0, len(str1)-1, memo)
+
+def count_palindromic_substring_memo(str1, i, j, memo):
+  # if i>j then there can be no substring
+  # if i=j it means string has single letter so we will count the string itself as a palindromic substring
+  # in both the cases we will return the length of the string as count of substring
+
+  if i >= j:
+    return 0 
+
+  # Declare a bool_memo array which stores
+  # the answer to recursive calls of palindromes
+  bool_memo = [[False for _ in range(len(str1))] for _ in range(len(str1))]
+
+  # if the recursive call has been called previously, 
+  # then return the stored value that was calculated previously
+  if(memo[i][j] != -1):
+    return memo[i][j]  
+
+  # checking if a substring of the string is a palindrome or not
+  if check_palindrome(str1, i, j, bool_memo):
+    # if it is a palindrome we will increment the count of the substrings 
+    # we will check the other substring from i+1 to j 
+    memo[i][j] = 1 + (count_palindromic_substring_memo(str1, i+1, j, memo)
+    # checking substring from i to j-1
+    + count_palindromic_substring_memo(str1, i, j-1, memo)
+    # remove common palindromic substrings and store the result in memo
+    - count_palindromic_substring_memo(str1, i+1, j-1, memo))
+    return memo[i][j]
+  
+  else:
+    # if it is not a palindrome then we will check the rest of the substrings
+    # and store its result in memo 
+    memo[i][j] = count_palindromic_substring_memo(str1, i+1, j, memo) + count_palindromic_substring_memo(str1, i, j-1, memo)  - count_palindromic_substring_memo(str1, i+1, j-1, memo)
+    return memo[i][j]
+
+def check_palindrome(str1, i, j, bool_memo):
+  # checking if the string is a palindrome or not
+
+  if i > j:
+    return True
+  
+  # if the recursive call has been called previously, then return
+  # the value that was stored previously
+  if bool_memo[i][j]!= False:
+    return bool_memo[i][j]
+
+  if str1[i] != str1[j]:
+    bool_memo[i][j] = False
+    return bool_memo[i][j]
+
+  bool_memo[i][j] = check_palindrome(str1, i+1, j-1,bool_memo)
+  return bool_memo[i][j] 
+
+# Driver code to test the above function
+if __name__ == '__main__':
+
+    str1_list = ["abdbca", "cddpd", "pqr", "abaab", "aaa"]
+    
+    # Let's uncomment this and check the effect of dynamic programming using memoization
+    # str1_list.append("xkjkqlajprjwefilxgpdpebieswu")
+    
+    for i in range(len(str1_list)):
+      print(i+1, ".\tstr1: ", str1_list[i], sep="")
+      print("\n\tCount of palindromic substrings:", count_palindromic_substring(str1_list[i]))
+      print('-' * 100)

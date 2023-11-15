@@ -1,0 +1,40 @@
+def find_lps_length(s):
+    return find_lps_length_recursion(s, 0, len(s)-1)
+
+def find_lps_length_recursion(s, start, end):
+    # if both pointers are pointing to the same index
+    if start==end:
+        return 1
+
+    # the characters at start and end indices match
+    if s[start]==s[end]:
+        substring_length = end - start + 1
+        
+        # if the substring length is 2 and it's also a palindrome
+        if substring_length == 2:
+            return 2
+        
+        # check whether the remaining string is a palindrome
+        if substring_length == 2 + find_lps_length_recursion(s, start+1, end-1):
+            return substring_length
+    
+    # skip one element either from the beginning or end and select the maximum resultant value
+    return max(find_lps_length_recursion(s, start+1, end), find_lps_length_recursion(s, start, end-1))
+
+
+# Driver code
+def main():
+    strings = ['abcbda', 'tworacecars', 'pqrssrqp', 'mnop', 'bbbbbbbbbbbbbbbbbbbb']
+    
+    # You can uncomment the line below and check how this recursive solution causes a time-out
+    # strings.append('mwusjunybvgafxuhloqwfoizqkkqzilltjw')
+    
+    for i in range(len(strings)):
+        print(i + 1, ".\t Input string: '", strings[i], "'", sep="")
+        result = find_lps_length(strings[i])
+        print("\t Length of the longest palindromic substring: ", result, sep="")
+        print("-" * 100)
+    
+
+if __name__ == '__main__':
+    main()

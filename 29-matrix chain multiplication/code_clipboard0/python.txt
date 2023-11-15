@@ -1,0 +1,31 @@
+import math
+def min_multiplications(dims):
+    # Base case
+    if len(dims) <= 2:
+        return 0
+    minimum = math.inf  # Init with maximum integer value
+    for i in range(1,len(dims)-1): # Recursive calls for all the possible multiplication sequences
+        minimum = min(minimum, 
+                    min_multiplications(dims[0:i+1]) +  # solve the subproblem up to the ith matrix
+                    min_multiplications(dims[i:]) +     # solve the subproblem from the i+1th matrix to the last
+                    dims[0] * dims[i] * dims[-1])       # calculate the number of multiplications for the 
+                                                        # current pair of matrices with dimensions dims[0]xdims[i] and dims[i]xdims[-1]
+    return minimum
+
+
+# Driver code
+def main():
+    dims = [[3, 3, 2, 1], [4, 3, 2, 1], [2, 2, 2], [1, 1, 1], [13, 16, 11, 99, 3]]
+
+    # You can uncomment the lines below and check how this recursive solution causes a time-out 
+    # dims.append([13, 16, 11, 99, 3, 13, 16, 11, 99, 3, 13, 16, 11, 99, 3, 13, 16, 11, 99, 3, 13, 16, 11, 99, 3, 13, 16, 11, 99, 3])
+
+    for i in range(len(dims)):
+        print(i+1, ".\tInput dims: ", dims[i] , sep="")
+        result = min_multiplications(dims[i])
+        print("\n\tThe least number of primitive multiplications possible: ", result, sep="")
+        print("-"*100, "\n", sep="")
+
+
+if __name__ == '__main__':
+    main()

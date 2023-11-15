@@ -1,0 +1,41 @@
+def count_palindromic_substring(str1):
+  n = len(str1)
+  # Declare a lookup table 2-D table which that
+  # the answers of the tabulation
+  lookup_table = [[False for _ in range(n)] for _ in range(n)]
+  ps_count=0
+
+  # start filling the lookup table with the results of the 
+  # palindromic substrings
+  for i in range(n - 1, -1, -1):
+    for j in range(i, n):
+      # start checking substrings from i to j
+      # if they are palindrome or not
+      if str1[i] == str1[j]:
+        # if the substring is palindrome set the 
+        # value in table as True if we have not checked it before
+        if i+1 >= j:
+          lookup_table[i][j] = True
+        # otherwise fill it with the previously stored value  
+        else:
+          lookup_table[i][j] = lookup_table[i+1][j-1]
+      # if the substring is a palindrome increment the count of
+      # the palindromic substrings by 1                  
+      if lookup_table[i][j]:
+        ps_count += 1
+
+  return ps_count
+
+
+# Driver code to test the above function
+if __name__ == '__main__':
+
+    str1_list = ["abdbca", "cddpd", "pqr", "abaab", "aaa"]
+    
+    # Let's uncomment this to see the benefit of using dynamic programming with tabulation
+    # str1_list.append("xkjkqlajprjwefilxgpdpebieswu")
+    
+    for i in range(len(str1_list)):
+      print(i+1, ".\tstr1: ", str1_list[i], sep="")
+      print("\n\tCount of palindromic substrings:", count_palindromic_substring(str1_list[i]))
+      print('-' * 100)

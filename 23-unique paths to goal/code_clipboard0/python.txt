@@ -1,0 +1,49 @@
+def find_unique_path(matrix):
+  # the length of 2d matrix will be equal to the number of rows
+  rows = len(matrix)  
+
+  # The number of elements in 1st row are equal to the number of columns in 2d matrix
+  column = len(matrix[0]) 
+
+  return find_unique_path_recursive(0, 0, rows, column, matrix)
+
+# Helper function to check the boundaries and base case
+def find_unique_path_recursive(i, j, row, col, matrix):
+
+  # check the boundary constraints
+  if (i == row or j == col):
+    return 0
+
+  # check if obstacle is present or not
+  if (matrix[i][j] == 1):
+    return 0
+
+  # check the base case when the last cell is reached
+  if (i == row-1 and j == col-1):
+    return 1
+  
+  # using the recursive approach when moving to next row or next column 
+  return find_unique_path_recursive(i+1, j, row, col, matrix) + find_unique_path_recursive(i, j+1, row, col, matrix)
+
+# Driver code
+def main():
+  inputs = [
+    [[0,1], [0,0]],
+		[[0,0,0], [0,0,0], [0,0,0]],
+		[[0,0,0], [0,1,0], [0,0,0]],
+		[[0,0,0], [1,1,1], [0,0,0]],
+    [[0,0,0,0],[1,0,1,0],[1,0,0,0],[0,1,0,0]]
+	]
+
+  # You can uncomment the lines below and check how this recursive solution causes a time-out 
+    
+  # inputs.append([[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])
+
+  for i in range(len(inputs)):
+    print(i + 1, ".\t Matrix:",inputs[i],"\n\n\t", \
+                      "Number of unique paths:", find_unique_path(inputs[i])) 
+        
+    print("-" * 100)
+    
+if __name__ == '__main__':
+    main()

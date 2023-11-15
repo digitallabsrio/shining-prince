@@ -1,0 +1,78 @@
+def can_partition_array(nums):
+    nums_len = len(nums)
+    # base case
+    if nums_len == 1:
+        return False
+
+    # calculate sum of array
+    array_sum = sum(nums)
+    # if array_sum is odd, it cannot be partitioned into equal sum subarrays
+    if array_sum % 2 != 0:
+        return False
+
+    # calculating the target subarray sum
+    target_sum = array_sum // 2
+
+    # Creating a memo to store two things:
+    # (i) The index of array elements
+    # (ii) The target sum
+    memo = {}
+
+    def is_subarray_sum(nums, index, target_sum):
+        nums_len = len(nums)
+
+        if target_sum == 0:  # Subarray formed with required half-sum
+            return True
+        if target_sum < 0 or index == nums_len:
+            return False
+
+        # here we will perform two operations:
+        # 1. include the current element therefore target_sum
+        #    will be updated as target_sum - current element
+        # or
+        # 2. exclude current element therefore no need to update target_sum
+        if (index, target_sum) not in memo:
+            memo[index, target_sum] = is_subarray_sum(
+                nums, index + 1, target_sum - nums[index]) \
+                    or is_subarray_sum(nums, index + 1, target_sum)
+
+
+        return memo[index, target_sum]
+    return is_subarray_sum(nums, 0, target_sum)
+    
+
+
+# Driver code
+def main():
+    arr1 = [3, 1, 1, 2, 2, 1]
+    arr2 = [1, 3, 7, 3]
+    arr3 = [1, 2, 3]
+    arr4 = [1, 2, 5]
+    arr5 = [1, 3, 4, 8]
+    arr6 = [1, 2, 3, 2, 3, 5]
+    arr7 = [1, 5, 3, 2, 3, 19, 3]
+    arr8 = [1, 2, 3, 5, 3, 2, 1]
+    arr = [arr1, arr2, arr3, arr4, arr5, arr6, arr7, arr8]
+
+    # Let's uncomment this and check the effect of dynamic programming using memoization
+
+    # arr9 = [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 
+    # 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 
+    # 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 
+    # 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 
+    # 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 
+    # 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 
+    # 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 99, 97]
+
+    # arr.append(arr9)
+
+    for i in range(len(arr)):
+        print(i + 1,  ".\t Input array: ", arr[i], sep="")
+        result = can_partition_array(arr[i])
+        print("\t Can we partition the array into equal sum arrays?: ",
+              bool(result), sep="")
+        print("-" * 100)
+
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,49 @@
+# function to find the maximum number of matching characters subsequence
+def find_max_matching_subseq(str1, str2, i, j, lookup_table): 
+
+    # base case
+    if i == len(str1) or j == len(str2): 
+        return 0
+
+    # if the subproblem has been computed before, return the value stored in lookup_table
+    elif lookup_table[i][j] != -1: 
+        return lookup_table[i][j]
+
+    # if current characters match, increment by 1
+    elif str1[i] == str2[j]:  
+        lookup_table[i][j] = 1 + find_max_matching_subseq(str1, str2, i+1, j+1, lookup_table)
+        return lookup_table[i][j]
+        
+    # else take max of either of two possibilities
+    lookup_table[i][j] = max(find_max_matching_subseq(str1, str2, i+1, j, lookup_table), find_max_matching_subseq(str1, str2, i, j+1, lookup_table))
+    return lookup_table[i][j]
+
+def min_del_ins(str1, str2):
+  # Declare a lookup_table array which stores the answer to recursive calls  
+  lookup_table = [[-1 for i in range(len(str2))] for i in range(len(str1))] 
+   
+  n = find_max_matching_subseq(str1, str2, 0, 0, lookup_table)
+  # calculating number of deletions required from str1 to transform it into str2
+  deletions = len(str1) - n
+  # calculating number of insertions required in str1 to transform it into str2
+  insertions = len(str2) - n
+  
+  return deletions,insertions
+
+# Driver code to test the above function
+if __name__ == '__main__':
+    str1_list = ["pqr", "heap", "passport", "baller", "sam","bed"]
+    str2_list = ["tqr", "pea", "ppsspt", "ball", "samson","read"]
+
+    # Let's uncomment this and check the effect of dynamic programming using memoization
+    # str1_list.append("sjcneiurutvmpdkapbrcapjru")
+    # str2_list.append("oidhfwepkxwebyurtunvidqlscmjbg")
+
+    for i in range(len(str1_list)):
+        print(i + 1, ".\tstr1: " , str1_list[i], sep="")
+        print("\tstr2:", str2_list[i])
+        deletions,insertions = min_del_ins(str1_list[i], str2_list[i])
+        print("\n\tMinimum deletions required:  " , deletions)
+        print("\tMinimum insertions required: " , insertions)
+        print('-' * 100)
+    

@@ -1,0 +1,51 @@
+def min_edit_dist_rec(str1, str2, m, n):
+    
+    # If first string is empty, the only option is to
+    # insert all characters of second string into first
+    if m == 0:
+        return n
+
+    # If second string is empty, the only option is to
+    # remove all characters of first string
+    if n == 0:
+        return m
+
+    # If last characters of two strings are same, nothing
+    # much to do. Ignore last characters and get count for
+    # remaining strings.
+    if str1[m - 1] == str2[n - 1]:
+        return min_edit_dist_rec(str1, str2, m - 1, n - 1)
+
+    # If last characters are not same, consider all three
+    # operations on last character of first string, recursively
+    # compute minimum cost for all three operations and take
+    # minimum of three values.
+    # adding '1' because every operation has cost of '1'
+    return 1 + min(min_edit_dist_rec(str1, str2, m, n - 1),  # Insert
+                   min_edit_dist_rec(str1, str2, m - 1, n),  # Remove
+                   min_edit_dist_rec(str1, str2, m - 1, n - 1)  # Replace
+                   )
+
+
+def min_edit_dist(str1, str2):
+   
+    return min_edit_dist_rec(str1, str2, len(str1), len(str2))
+
+
+# Driver code to test the above function
+if __name__ == '__main__':
+
+    str1 = ["sunday", "sam", "110011010110001", "cat", "ball"]
+    str2 = ["saturday", "samson", "1100101111110010", "cut", "baller"]
+    
+    # You can uncomment the lines below and check how this recursive solution causes a time-out 
+    
+    # str1.append("iaetnxijfofxwnzfitssulvepiengehcaibfaorvraugndnurjfgixjljuibiaetnxijfofxwnzfitssulvepiengehcaibfaorvraugndnurjfgixjljuib")
+    # str2.append("raetnsijfoyxwnzcitssolveppengeqcaibnaorveaugnvnurjmgixjljuibabcdraetnsijfoyxwnzcitssolveppengeqcaibnaorveaugnvnurjmgixjljuib")
+
+    for i in range(len(str1)):
+        print(i+1, ".\tstr1: ", str1[i], sep="")
+        print("\tstr2:", str2[i])
+        print("\n\tMinimum Edit Distance:", min_edit_dist(str1[i], str2[i]))
+        print('-' * 100)
+  

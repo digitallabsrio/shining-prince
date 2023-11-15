@@ -1,0 +1,35 @@
+def get_fibonacci_memo(n, lookup_table):
+    # Base case
+    if n < 2:
+        return n
+
+    # Check if already present
+    if lookup_table[n] != -1:
+        return lookup_table[n]
+
+    # Adding entry to table if not present
+    lookup_table[n] = get_fibonacci_memo(n - 1, lookup_table) + \
+                      get_fibonacci_memo(n - 2, lookup_table)
+    return lookup_table[n]
+
+
+def get_fibonacci(n):
+    # Initializing the lookup table of size num + 1
+    lookup_table = [-1] * (n + 1)
+    return get_fibonacci_memo(n, lookup_table)
+
+
+# Driver code
+def main():
+    inputs = [0, 5, 7, 10, 14]
+
+    # Let's uncomment this and check the effect of dynamic programming using memoization
+    # inputs.append(60)
+
+    for i in range(len(inputs)):
+        print(str(i + 1) + ". " + str(inputs[i]) + "th Fibonacci number is:", get_fibonacci(inputs[i]))
+        print("-" * 100, "\n", sep="")
+
+
+if __name__ == "__main__":
+    main()

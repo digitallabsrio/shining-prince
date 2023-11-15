@@ -1,0 +1,34 @@
+def lcs_length_rec(s1, s2, i, j, count):
+  # base case of when either string has been exhausted
+  if i >= len(s1) or j >= len(s2):  
+    return count
+  # if i and j characters match, increment the count and compare the rest of the strings
+  if s1[i] == s2[j]:     
+    count = lcs_length_rec(s1, s2, i+1, j+1, count+1)
+  # compare s1[i:] with s2, s1 with s2[j:], and take max of current count and these two results
+  return max(count, lcs_length_rec(s1, s2, i+1, j, 0), lcs_length_rec(s1, s2, i, j+1, 0))
+  
+
+def lcs_length(s1, s2):
+  return lcs_length_rec(s1, s2, 0, 0, 0)
+
+
+# Driver code
+def main():
+    s1 = ["educative", "bcdcdcd", "arefun", "yourocks", "abc"]
+    s2 = ["education", "aacdcdcd", "isfun", "youawesome", "def"]
+
+    # You can uncomment the two lines below and check how this recursive solution causes a time-out 
+
+    #s1.append("ypzrvyigwdiqrnbglvviozqzruvmwivgvqvrfhqi")
+    #s2.append("wdiqrnbglvviozqzruvmwivgvqvrfhqiypzrvyigwdiqrn")
+
+    for i in range(0, len(s1)):
+        print(i+1, ".\tString 1: \"",s1[i], "\" \n\tString 2: \"",s2[i], "\"", sep="")
+        result = lcs_length(s1[i], s2[i])
+        print("\n\tThe Length of Longest Common Substring is: ", result, sep="")
+        print("-"*100, "\n", sep="")
+
+
+if __name__ == '__main__':
+    main()

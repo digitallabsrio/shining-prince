@@ -1,0 +1,38 @@
+def minimum_deletions(s):
+    length = len(s)
+    return length - longest_palindromic_subsequence(s, 0, length - 1)
+
+def longest_palindromic_subsequence(s, start, end):
+    if start > end:
+        return 0
+
+    # Every sequence with one element is a palindrome of length 1
+    if start == end:
+        return 1
+
+    # Case 1: elements at the beginning and the end are the same
+    if s[start] == s[end]:
+        return 2 + longest_palindromic_subsequence(s, start + 1, end - 1)
+
+    # Case 2: skip one element either from the beginning or the end
+    c1 = longest_palindromic_subsequence(s, start + 1, end)
+    c2 = longest_palindromic_subsequence(s, start, end - 1)
+    return max(c1, c2)
+
+
+# Driver code
+def main():
+    strings=['raddar', 'lleveal','aqwrqhanisahinahqwe','pqr']
+
+    # You can uncomment the lines below and check how this recursive solution causes a time-out 
+
+    # strings.append('aeqirradarqwruirrraaadddaqweraarrr')
+    
+    for i in range(len(strings)):
+        print(i+1, ". The minimum deletions required to make '", strings[i] , "' a palindrome is: ", minimum_deletions(strings[i]), sep="")
+        print("-"*100)
+
+
+
+if __name__ == '__main__':
+    main()

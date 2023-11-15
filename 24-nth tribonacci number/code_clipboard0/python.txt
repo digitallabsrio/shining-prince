@@ -1,0 +1,25 @@
+def tribonacci(n):
+    # base cases
+    if n == 0:
+        return 0
+    elif n == 1 or n == 2: 
+        return 1
+    # recursive case
+    return tribonacci(n - 1) + tribonacci(n - 2) + tribonacci(n - 3)
+
+# Driver code
+def main():
+    n = [4, 5, 25, 17, 19]
+
+    # You can uncomment the lines below and check how this recursive solution causes a time-out 
+
+    # n.append(45)
+
+    for i in range(len(n)):
+        print((i + 1), ".\tThe ", (n[i]), "th Tribonacci number is:  ",
+              tribonacci(n[i]), sep="")
+        print("-"*100, "\n")
+
+
+if __name__ == '__main__':
+    main()
